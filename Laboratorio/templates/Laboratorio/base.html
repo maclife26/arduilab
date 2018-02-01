@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="es">
+<head>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Laboratorio Remoto Arduino</title>
+
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	
+	
+
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'js/jquery.knob.js' %}"></script>
+
+
+	
+</head>
+
+
+<body>
+	
+	<div class="container-fluid">
+
+	<header class="row">  	
+		<div class="col-md-3">
+			<div class="image text-center">
+              <img src=" {% static 'images/logo-puce.jpg' %}"  alt="Cinque Terre" width="218" height="83" align="center">
+            </div>	
+		</div>
+
+		<div class="col-md-9" style="background-color: #615F61;">
+		<div class="container text-center mt-3 text-light">
+			<font class="font-weight-bold" size="6">Laboratorio Remoto Arduino</font>
+        </div>
+		</div>
+	</header>
+
+	<div class="row mh-100" style="height: 100%; background-color: #4ED7FC;">
+		<div class="col-md-12 mt-4">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
+						</div>
+					</div>
+
+					<div class="text-center">
+						<!--<button type="button" class="btn btn-dark" onclick="myFunction()">Ver Streaming</button>-->
+						<iframe src="http://192.168.100.42:8888" width="470" height="410" frameborder="0"></iframe>
+					</div>
+
+					<!--<script>
+					var MyStream;
+
+					function myFunction()
+					{
+					    MyStream = window.open("http://192.168.100.42:8888", "MyStream", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=470,height=470");
+					}
+					</script>-->
+
+					<div class="row">
+
+						
+						
+						
+
+						<div class="container text-center my-4 col-md-6">
+
+							<h6 class="font-weight-bold">Análogo 1</h6>
+
+							<input type="text" value="0" class="dial">
+							<script>
+							    $(function() {
+							        $(".dial").knob({
+							        	'fgColor':'#615F61',
+							        	'width':80,
+							        	'height':80,
+							        	'angleOffset':-125,
+										'angleArc':250
+							        	});
+							    });
+							</script>
+
+						<div class="container text-center my-4 col-md-6">
+
+							<h6 class="font-weight-bold">Análogo 2</h6>
+
+							<input type="text" value="0" class="dial">
+							<script>
+							    $(function() {
+							        $(".dial").knob({
+							        	'fgColor':'#615F61',
+							        	'width':80,
+							        	'height':80,
+							        	'angleOffset':-125,
+										'angleArc':250
+										
+							        	});
+							    });
+							</script>
+
+						</div>
+						</div>
+
+						<div class="container text-center my-4 col-md-6">
+
+								<h6 class="font-weight-bold">Entradas Digitales</h6>
+
+								<form action="" method="post"> {% csrf_token %}
+
+								<button name="on1" type="submit" class="btn btn-success">Pin1 On</button>
+								<button name="off1" type="submit" class="btn btn-danger">Pin1 Off</button>
+								<br>
+								<button name="on2" type="submit" class="btn btn-success">Pin2 On</button>
+								<button name="off2" type="submit" class="btn btn-danger">Pin2 Off</button>
+								<br>
+								<button name="on3" type="submit" class="btn btn-success">Pin3 On</button>
+								<button name="off3" type="submit" class="btn btn-danger">Pin3 Off</button>
+								<br>
+								<button name="on4" type="submit" class="btn btn-success">Pin4 On</button>
+								<button name="off4" type="submit" class="btn btn-danger">Pin4 Off</button>
+								<br>
+								<button name="on5" type="submit" class="btn btn-success">Pin5 On</button>
+								<button name="off5" type="submit" class="btn btn-danger">Pin5 Off</button>
+								<br>
+								<button name="on6" type="submit" class="btn btn-success">Pin6 On</button>
+								<button name="off6" type="submit" class="btn btn-danger">Pin6 Off</button>
+								<br>
+								<button name="on7" type="submit" class="btn btn-success">Pin7 On</button>
+								<button name="off7" type="submit" class="btn btn-danger">Pin7 Off</button>
+								<br>
+								<button name="on8" type="submit" class="btn btn-success">Pin8 On</button>
+								<button name="off8" type="submit" class="btn btn-danger">Pin8 Off</button>
+								<br>
+								
+								</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 text-center">
+					<form role="form" method="post"> {% csrf_token %}
+						<div class="form-group">
+							 <br><br><br><br>
+							<label for="exampleInputFile">
+								File input
+							</label>
+							<input type="file" id="exampleInputFile" />
+							<p class="help-block">
+								Selecciona un Sketch Arduino con extensión .ino
+							</p>
+						</div>
+						<button name="sketch" type="submit" class="btn btn-dark">Enviar</button>
+					</form>
+					<br><br><br><br><br><br><br><br>
+						<button type="button" class="btn btn-dark">Salir</button>
+					<br><br><br><br>
+				</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="navbar fixed-bottom" align="center" style="background-color: #615F61;">
+	<span class="align-middle text-light">© 2018 - PUCE SD. Todos los derechos reservados.</span>
+</div>
+
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	
+</body>
+</html>
