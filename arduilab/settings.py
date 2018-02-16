@@ -127,6 +127,8 @@ STATICFILES_DIRS = [
     '/Laboratorio/static/',
 ]
 
+MEDIA_ROOT = '/home/pi/sketchbook'
+
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'

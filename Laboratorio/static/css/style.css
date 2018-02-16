@@ -20,6 +20,7 @@ body {
 	font-family: 'Montserrat', 'Lato', 'Open Sans', 'Helvetica Neue', Helvetica, Calibri, Arial, sans-serif;
 	color: @gray;
 	background: #f2f2f2;
+  width: 100%;
 }
 .jumbotron {
   background: @gray;

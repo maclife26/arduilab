@@ -23,12 +23,6 @@ def Index(request):
 	return render(request, 'Laboratorio/base.html')
 
 #Seguir desarrollando este método para poder enviar el Sketch hasta la Placa Arduino
-def Sketch(request):
-	if 'sketch' in request.POST:
-		println('enviado')
-	else:
-		println('no se ha podido enviar')
-	return render(request, 'Laboratorio/base.html')
 
 def Pin02(request):
 	if 'on1' in request.POST:
@@ -37,4 +31,16 @@ def Pin02(request):
 		btn2.off()
 	return render(request, 'Laboratorio/base.html')
 
+def Sketch(request):
+    if 'sketch'in request.POST:
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+        	newdoc = Document(filename = request.POST['filename'],docfile = request.FILES['docfile'])
+        	newdoc.save(form)
+        	return redirect("uploads")
+    else:
+        form = UploadForm()
+    #tambien se puede utilizar render_to_response
+    #return render_to_response('upload.html', {'form': form}, context_instance = RequestContext(request))
+    return render(request, 'Laboratorio/base.html', {'form': form})
 
