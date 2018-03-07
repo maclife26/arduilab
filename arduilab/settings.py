@@ -60,6 +60,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -67,6 +68,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'arduilab.wsgi.application'
 
@@ -127,7 +130,13 @@ STATICFILES_DIRS = [
     '/Laboratorio/static/',
 ]
 
-MEDIA_ROOT = '/home/pi/sketchbook'
+
+MEDIA_URL = '/media/sketchbook/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/sketchbook/')
+
+
+
+
 
 STATIC_URL = '/static/'
 

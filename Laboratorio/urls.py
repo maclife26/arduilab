@@ -10,9 +10,11 @@ from django.contrib.auth.decorators import user_passes_test
 app_name ='Laboratorio'
 
 urlpatterns = [
-#url(r'^$', views.Index ,name='Index'),
-url(r'^sketch/$', views.Sketch ,name='Sketch'),
+url(r'^subir_archivo/$', views.SubirArchivo ,name='Subir-Archivo'),
 url(r'^$', views.Pin02 ,name='Pin02'),
+#url(r'^subir/$', views.UploadPlantilla ,name='UploadPlantilla'),
+
+url(r'^compilar/$', views.Compilar ,name='Compilar'),
 
 
 url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='Login'),

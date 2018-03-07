@@ -1,0 +1,87 @@
+
+{% extends "Laboratorio/base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+			<div class="row" align="center">
+
+
+			
+
+				<form role="form" action="{% url 'Laboratorio:Subir-Archivo' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+								{{ form.as_p }}
+						<div class="form-group">
+							 <br><br><br><br>
+							<label for="exampleInputFile">
+								File input
+							</label>
+							<input type="file" name="exampleInputFile" />
+							<p class="help-block">
+								Selecciona un Sketch Arduino con extensión .ino
+							</p>
+						</div>
+
+						
+						<button name="sketch" type="submit" class="btn btn-dark">Enviar</button>
+
+						
+						{% if uploaded_file_url %}
+  			  			<script type="text/javascript">alert("{{ uploaded_file_url }}")</script>
+ 					 	{% endif %}
+
+
+ 					 	{% if exito %}
+						<button name="compilarbtn" id="compilarbtn" type="button" class="btn btn-dark">Compilar</button>
+  			  			{% else %}
+  			  			<button name="compilarbtn" id="compilarbtn" disabled type="button" class="btn btn-dark">Compilar</button>
+ 					 	{% endif %}
+				</form>
+
+
+
+
+					
+
+			</div>
+					<br>
+ 					 <br>
+ 					 <br>
+
+				
+				
+
+					<br>
+					<br>
+					<br>
+					<br>
+
+
+<script type="text/javascript">
+	
+
+		$("#compilarbtn").click(function () {
+					
+						$.ajax({
+        			url: '/compilar/',
+        			data: {
+        				  'respuesta': true
+       				 },
+      				  dataType: 'json',
+       					success: function (data) {
+				        	if (data =='true'){
+				        		alert('archivo compilado satisfactoriamente');
+				        	}else{
+				        		alert('archivo no ha sido compilado');
+				        	}
+				          
+				        }
+     		 });
+
+		});
+
+					
+
+</script>
+
+					
+{% endblock body %}

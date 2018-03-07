@@ -12,10 +12,18 @@
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	
 	
-
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	
 	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 	<script src="{% static 'js/DjangoAjax.js' %}"></script>
 	<script src="{% static 'js/jquery.knob.js' %}"></script>
+	<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+
+ 
 
 
 	
@@ -24,7 +32,7 @@
 
 
 <body>
-	
+
 	<div class="container-fluid">
 
 	<header class="row">  	
@@ -43,128 +51,22 @@
 
 	<div class="row mh-100" style="height: 100%; background-color: #4ED7FC;">
 		<div class="col-md-12 mt-4">
-			<div class="row">
-
-
-				<div class="col-md-6">
-					
-
-					<div class="text-center">
-						
-						<iframe src="http://192.168.100.42:8888" width= "520" height="395" frameborder="0"></iframe>
-
-					</div>
-
-				
-					<div class="row">
-
-						
-						
-						
-
-						<div class="container text-center my-4 col-md-6">
-
-							<h6 class="font-weight-bold">Análogo 1</h6>
-
-							<input type="text" value="0" class="dial">
-							<script>
-							    $(function() {
-							        $(".dial").knob({
-							        	'fgColor':'#615F61',
-							        	'width':80,
-							        	'height':80,
-							        	'angleOffset':-125,
-										'angleArc':250
-							        	});
-							    });
-							</script>
-
-						<div class="container text-center my-4 col-md-6">
-
-							<h6 class="font-weight-bold">Análogo 2</h6>
-
-							<input type="text" value="0" class="dial">
-							<script>
-							    $(function() {
-							        $(".dial").knob({
-							        	'fgColor':'#615F61',
-							        	'width':80,
-							        	'height':80,
-							        	'angleOffset':-125,
-										'angleArc':250
-										
-							        	});
-							    });
-							</script>
-
-						</div>
-						</div>
-
-						<div class="container text-center my-4 col-md-6">
-
-								<h6 class="font-weight-bold">Entradas Digitales</h6>
-
-								<form action="" method="post"> {% csrf_token %}
-
-								<button name="on1" type="submit" class="btn btn-success">Pin1 On</button>
-								<button name="off1" type="submit" class="btn btn-danger">Pin1 Off</button>
-								<br>
-								<button name="on2" type="submit" class="btn btn-success">Pin2 On</button>
-								<button name="off2" type="submit" class="btn btn-danger">Pin2 Off</button>
-								<br>
-								<button name="on3" type="submit" class="btn btn-success">Pin3 On</button>
-								<button name="off3" type="submit" class="btn btn-danger">Pin3 Off</button>
-								<br>
-								<button name="on4" type="submit" class="btn btn-success">Pin4 On</button>
-								<button name="off4" type="submit" class="btn btn-danger">Pin4 Off</button>
-								<br>
-								<button name="on5" type="submit" class="btn btn-success">Pin5 On</button>
-								<button name="off5" type="submit" class="btn btn-danger">Pin5 Off</button>
-								<br>
-								<button name="on6" type="submit" class="btn btn-success">Pin6 On</button>
-								<button name="off6" type="submit" class="btn btn-danger">Pin6 Off</button>
-								<br>
-								<button name="on7" type="submit" class="btn btn-success">Pin7 On</button>
-								<button name="off7" type="submit" class="btn btn-danger">Pin7 Off</button>
-								<br>
-								<button name="on8" type="submit" class="btn btn-success">Pin8 On</button>
-								<button name="off8" type="submit" class="btn btn-danger">Pin8 Off</button>
-								<br>
-								
-								</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 text-center">
-					<form role="form" method="post" enctype="multipart/form-data"> {% csrf_token %}
-								{{ form.as_p }}
-						<div class="form-group">
-							 <br><br><br><br>
-							<label for="exampleInputFile">
-								File input
-							</label>
-							<input type="file" id="exampleInputFile" />
-							<p class="help-block">
-								Selecciona un Sketch Arduino con extensión .ino
-							</p>
-						</div>
-						<button name="sketch" type="submit" class="btn btn-dark">Enviar</button>
-					</form>
-					<br><br><br><br><br><br><br><br>
-						<button type="button" class="btn btn-dark">Salir</button>
-					<br><br><br><br>
-				</div>
-		</div>
+		{% block body %}
+		
+		{% endblock body %}
+			</div>
 	</div>
-</div>
-</div>
+
+	
+
+	</div>
+
 
 <div class="navbar fixed-bottom" align="center" style="background-color: #615F61;">
 	<span class="align-middle text-light">© 2018 - PUCE SD. Todos los derechos reservados.</span>
 </div>
 
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'js/popper.min.js' %}"></script>
+	
 	
 </body>
 </html>
