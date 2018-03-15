@@ -1,10 +1,13 @@
-
-
 {% extends "Laboratorio/base.html" %}
 {% load staticfiles %}
-{% block body %}
 
-<script src="{% static 'js/jquery.knob.js' %}"></script>
+
+{% block body %}
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.knob.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+
+
 			<div class="row">
 
 
@@ -13,18 +16,14 @@
 
 					<div class="text-center">
 						
-						<iframe src="http://192.168.100.42:8888" width= "520" height="395" frameborder="0"></iframe>
+						<iframe src="http://192.168.100.42:8888" width= "460" height="320" frameborder="0"></iframe>
 
 					</div>
 
 				
 					<div class="row">
 
-						
-						
-						
-
-						<div class="container text-center my-4 col-md-6">
+						<div class="container text-center my-2 col-md-4">
 
 							<h6 class="font-weight-bold">Análogo 1</h6>
 
@@ -35,13 +34,15 @@
 							        	'fgColor':'#615F61',
 							        	'width':80,
 							        	'height':80,
-							        	'angleOffset':-125,
+							        	'angleOffset':-125,    
 										'angleArc':250
 							        	});
 							    });
 							</script>
 
-						<div class="container text-center my-4 col-md-6">
+							</div>
+
+						<div class="container text-center my-2 col-md-4">
 
 							<h6 class="font-weight-bold">Análogo 2</h6>
 
@@ -60,40 +61,24 @@
 							</script>
 
 						</div>
-						</div>
+						
 
-						<div class="container text-center my-4 col-md-6">
+						<div class="container text-center my-2 col-md-4">
 
 								<h6 class="font-weight-bold">Entradas Digitales</h6>
-
-								<form action="" method="post"> {% csrf_token %}
-
-								<button name="on1" type="submit" class="btn btn-success">Pin1 On</button>
-								<button name="off1" type="submit" class="btn btn-danger">Pin1 Off</button>
+								<button id="on1" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin1 On</button>
+								<button id="off1" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin1 Off</button>
 								<br>
-								<button name="on2" type="submit" class="btn btn-success">Pin2 On</button>
-								<button name="off2" type="submit" class="btn btn-danger">Pin2 Off</button>
+								<button id="on2" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin2 On</button>
+								<button id="off2" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin2 Off</button>
 								<br>
-								<button name="on3" type="submit" class="btn btn-success">Pin3 On</button>
-								<button name="off3" type="submit" class="btn btn-danger">Pin3 Off</button>
+								<button id="on3" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin3 On</button>
+								<button id="off3" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin3 Off</button>
 								<br>
-								<button name="on4" type="submit" class="btn btn-success">Pin4 On</button>
-								<button name="off4" type="submit" class="btn btn-danger">Pin4 Off</button>
-								<br>
-								<button name="on5" type="submit" class="btn btn-success">Pin5 On</button>
-								<button name="off5" type="submit" class="btn btn-danger">Pin5 Off</button>
-								<br>
-								<button name="on6" type="submit" class="btn btn-success">Pin6 On</button>
-								<button name="off6" type="submit" class="btn btn-danger">Pin6 Off</button>
-								<br>
-								<button name="on7" type="submit" class="btn btn-success">Pin7 On</button>
-								<button name="off7" type="submit" class="btn btn-danger">Pin7 Off</button>
-								<br>
-								<button name="on8" type="submit" class="btn btn-success">Pin8 On</button>
-								<button name="off8" type="submit" class="btn btn-danger">Pin8 Off</button>
+								<button id="on4" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin4 On</button>
+								<button id="off4" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin4 Off</button>
 								<br>
 								
-								</form>
 						</div>
 					</div>
 				</div>
@@ -101,9 +86,53 @@
 					
 					<br><br><br><br><br><br><br><br>
 						<button type="button" class="btn btn-dark">Salir</button>
-					<br><br><br><br>
+						<span class="timer"></span>
+
+<script type="text/javascript">
+  $('.timer').countTo({from: 0, to: 5000});
+</script>
+					<br><br>
+					<input type="text" value="40" class="dial">
+							<script>
+							    $(function() {
+							        $(".dial").knob({
+							        	'fgColor':'#615F61',
+							        	'width':80,
+							        	'height':80,
+							        	'angleOffset':-125,    
+										'angleArc':250,
+										'value': 50,
+							        	});
+							    });
+							</script><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+					<br><br><br><br><br><br><br><br><br><br>
 				</div>
 			</div>
+			
+
+			<script type="text/javascript">
+			var objeto;
+			function Enviar(a){
+				objeto=a;
+				$.ajax({
+        			url: '/accionarBoton/',
+        			data: {
+        				  'peticion': String(objeto.id)
+       				 },
+      				  dataType: 'json',
+       					success: function (data) {
+				        		boton = document.getElementById(String(data))
+				        		if (boton.className  == "btn btn-danger"){
+				        			boton.className= "btn btn-success";
+				        		}else{
+				        			boton.className= "btn btn-danger";
+				        		}
+				        		
+				        }
+     		 });
+			}
+			
+			</script>
 
 
 

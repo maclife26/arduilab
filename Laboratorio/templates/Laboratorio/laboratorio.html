@@ -1,0 +1,203 @@
+{% extends "Laboratorio/base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<script type="text/javascript" src="{% static 'js/jquery.knob.js' %}"></script>
+
+<div class="row">
+
+
+				<div class="col-md-6 my-4">
+					
+
+					<div class="container text-center">
+						
+						<iframe src="http://192.168.100.42:8888" width= "545" height="315" frameborder="0"></iframe>
+
+					</div>
+
+				
+					
+				</div>
+
+				<div class="col-md-6 my-4">
+
+					<div class="row md-2 my-4 text-center">
+
+						<div class="col-md-6">
+
+								<h6 class="font-weight-bold">Entradas Digitales</h6>
+								<button id="on1" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin1 On</button>
+								<button id="off1" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin1 Off</button>
+								<br>
+								<button id="on2" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin2 On</button>
+								<button id="off2" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin2 Off</button>
+								<br>
+								<button id="on3" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin3 On</button>
+								<button id="off3" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin3 Off</button>
+								<br>
+								<button id="on4" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin4 On</button>
+								<button id="off4" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin4 Off</button>
+								<br>
+								<button id="on5" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin5 On</button>
+								<button id="off5" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin5 Off</button>
+								<br>
+								<button id="on6" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin6 On</button>
+								<button id="off6" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin6 Off</button>
+								<br>
+								<button id="on7" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin7 On</button>
+								<button id="off7" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin7 Off</button>
+								<br>
+								<button id="on8" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin8 On</button>
+								<button id="off8" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin8 Off</button>
+								<br><br><br>						
+						</div>
+
+						<div class="col-md-6">
+							<div class="container text-center col-md-8">
+
+							<h6 class="font-weight-bold">Análogo 1</h6>
+
+							<input type="text" value="0" class="analogo1" data-entryid="ana1" id="anal1">
+
+							<script>
+							    $(function() {
+							        $(".analogo1").knob({
+							        	'fgColor':'#615F61',
+							        	'width':100,
+							        	'height':100,
+							        	'angleOffset':-125,    
+										'angleArc':250,
+										release : function (value) {
+                    					//alert(this.$.attr('data-entryid')); 
+                    					//alert("release : " + value);
+
+                    					$.ajax({
+        									url: '/accionarAnalogo/',
+        									data: {
+        				  							'peticionA': value,
+        				  							'saludo': (this.$.attr('data-entryid'))
+        				  							
+        				  							
+       				 						},
+      				  						dataType: 'json',
+       											
+     		 							});
+               		 					},
+							        });
+							    });
+
+							</script>
+
+						</div>
+						<br><br>
+						<div class="container text-center col-md-8">
+
+							<h6 class="font-weight-bold">Análogo 2</h6>
+
+							<input type="text" value="0" class="analogo2" data-entryid="ana2" id="anal2">
+
+							<script>
+							    $(function() {
+							        $(".analogo2").knob({
+							        	'fgColor':'#615F61',
+							        	'width':100,
+							        	'height':100,
+							        	'angleOffset':-125,
+										'angleArc':250,
+										release : function (value) {
+                    					//alert(this.$.attr('data-entryid')); 
+                    					//alert("release : " + value);
+
+                    					$.ajax({
+        									url: '/accionarAnalogo/',
+        									data: {
+        				  							'peticionA': value,
+        				  							'saludo': (this.$.attr('data-entryid'))
+        				  							
+        				  							
+       				 						},
+      				  						dataType: 'json',
+       											
+     		 							});
+            		 					},
+							        });
+							    });
+							</script>
+
+						</div>
+						</div>
+						
+
+						
+
+					</div>
+					
+					
+						
+						<span class="timer"></span>
+
+<script type="text/javascript">
+  $('.timer').countTo({from: 0, to: 5000});
+</script>
+					
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="container-fluid md-12">
+					
+				</div>
+				
+			</div>
+			
+
+			<script type="text/javascript">
+			var objeto;
+			function Enviar(a){
+				objeto=a;
+				$.ajax({
+        			url: '/accionarBoton/',
+        			data: {
+        				  'peticion': String(objeto.id)
+       				 },
+      				  dataType: 'json',
+       					success: function (data) {
+				        		boton = document.getElementById(String(data))
+				        		if (boton.className  == "btn btn-success"){
+				        			boton.className = "btn btn-danger";
+				        		}else{
+				        			boton.className = "btn btn-success";
+				        		}
+				        		
+				        }
+     		 });
+			}
+			
+			</script>
+
+<!--/////////////////////////////////////////////////////////////////////////
+			<script type="text/javascript">
+			var objetoA;
+			function EnviarAna(b){
+				objetoA=b;
+				$.ajax({
+        			url: '/accionarAnalogo/',
+        			data: {
+        				  'peticionA': String(objeto.id)
+       				 },
+      				  dataType: 'json',
+       					success: function (data) {
+				        		boton = document.getElementById(String(data))
+				        		
+				        }
+     		 });
+			}
+			
+			</script>
+-->
+			
+
+
+
+{% endblock body %}

@@ -25,7 +25,7 @@ SECRET_KEY = '8w^la&^l3eh9&m^@#4tj211(h34ij!(_^y1)$5t)q%e_^c1@mi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.100.42', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -125,9 +125,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+STATIC_URL = '/static/'
+#STATIC_ROOT =  os.path.join(BASE_DIR, "static")
+LABORATORIO_DIR=os.path.join(BASE_DIR, 'Laboratorio')
 STATICFILES_DIRS = [
-    #os.path.join(BASE_DIR, "static"),
-    '/Laboratorio/static/',
+    os.path.join(LABORATORIO_DIR, 'static'),
+    
 ]
 
 
@@ -135,10 +138,6 @@ MEDIA_URL = '/media/sketchbook/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/sketchbook/')
 
 
-
-
-
-STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL='/login/'

@@ -1,0 +1,59 @@
+{% extends "Laboratorio/base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+
+<div class="container">
+  <div class="col-md-12">
+    {% if form.errors %}
+      <center><p class="lead">Tu usuario o contraseña no son validos. Intente nuevamente</p></center>
+    {% endif %}
+    {% if next %}
+      {% if user.is_authenticated %}
+        <center><p class="lead">Tu cuenta no tiene permiso para visitar esta página. Por favor selecciona una cuenta con permisos .</p></center>
+      {% else %}
+        <center><p class="lead">Registrese para acceder a esta página.</p></center>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+<!--/////////////////////////////////////////////////////////////////////////-->
+<br><br><br><br>
+<div class="container">
+  <div class="col-md-12" align="center">
+      <table border="0" style="background-color:; width: 40%; height: 30%;">
+        <form method="post" name="Login_Form" class="form-signin" action="{% url 'Laboratorio:Login' %}" >{% csrf_token %}
+          <tr>
+            <td colspan="2" align="center"><p class="lead">¡Bienvenido! Ingrese por favor</p></td>
+          </tr>
+
+          <tr>
+          
+            <td> {{ form.username.label_tag }}</td>
+            <td> {{ form.username }}</td>
+          </tr>
+          
+          <tr><br>
+            <td><br>{{ form.password.label_tag }}</td>
+            <td><br>{{ form.password }}</td>
+          </tr>
+
+          <tr><br>
+            <td colspan="2" align="center"><br>
+              <input type="submit" class="btn btn-dark" value="login" />
+              <input type="hidden" name="next" value="{{ next }}" />              
+            </td>
+          </tr>
+
+        </form>
+            {# Assumes you setup the password_reset view in your URLconf #}
+      </table>
+    </div>
+    <br>
+</div>
+<br>
+
+
+<!--/////////////////////////////////////////////////////////////////////////-->
+            
+{% endblock body %}

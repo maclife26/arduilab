@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html lang="es">
+<html lang="es" style="height: 100%;">
+
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'css/alertify.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/themes/default.min.css' %}">
+
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.countTo.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/DjangoAjax.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.knob.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/alertify.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
+
+<link rel="shortcut icon" href="{% static 'images/favicon-16x16.png' %}"/>
+
 <head>
 	
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<title>Laboratorio Remoto Arduino</title>
-
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-	
-	
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'js/popper.min.js' %}"></script>
-	
-	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-	<script src="{% static 'js/DjangoAjax.js' %}"></script>
-	<script src="{% static 'js/jquery.knob.js' %}"></script>
-	<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
-
- 
-
-
 	
 </head>
 
 
 
-<body>
+<body style="height: 100%;">
 
-	<div class="container-fluid">
+	<div class="container-fluid" style="height: 100%;">
 
 	<header class="row">  	
 		<div class="col-md-3">
@@ -45,28 +43,42 @@
 		<div class="col-md-9" style="background-color: #615F61;">
 		<div class="container text-center mt-3 text-light">
 			<font class="font-weight-bold" size="6">Laboratorio Remoto Arduino</font>
+			    
+    </div>
+
         </div>
-		</div>
+		
 	</header>
 
 	<div class="row mh-100" style="height: 100%; background-color: #4ED7FC;">
-		<div class="col-md-12 mt-4">
+		<div class="container-fluid col-md-12 mt-2">
 		{% block body %}
+
+
+
 		
 		{% endblock body %}
 			</div>
 	</div>
 
-	
-
-	</div>
-
 
 <div class="navbar fixed-bottom" align="center" style="background-color: #615F61;">
 	<span class="align-middle text-light">© 2018 - PUCE SD. Todos los derechos reservados.</span>
+	{% if user.is_authenticated  %}
+			<div id="">
+            
+                Bienvenido/a,
+                <strong>{{user.username}}</strong>.
+            
+            
+                
+                <a href="/logout/">Cerrar sesión</a>
+            {% endif %}
+        </div>
 </div>
-
+</div>
 	
+
 	
 </body>
 </html>

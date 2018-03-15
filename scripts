@@ -1,0 +1,7 @@
+sudo python3
+screen /dev/ttyACM0 9600
+
+cd projects/arduilab/media/sketchbook/
+sudo python3
+import subprocess
+subprocess.call('bash make.sh monitor',shell=True)

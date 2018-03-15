@@ -3,17 +3,16 @@
 {% load staticfiles %}
 
 {% block body %}
-			<div class="row" align="center">
 
-
-			
-
-				<form role="form" action="{% url 'Laboratorio:Subir-Archivo' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+<script type="text/javascript" src="{% static 'js/jquery.knob.js' %}"></script>
+			<div class="row" align="center" >
+				<div class="centrar">
+					<form role="form" action="{% url 'Laboratorio:Subir-Archivo' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
 								{{ form.as_p }}
 						<div class="form-group">
-							 <br><br><br><br>
+							 <br><br><br><br><br><br><br><br>
 							<label for="exampleInputFile">
-								File input
+								Entrada de archivo
 							</label>
 							<input type="file" name="exampleInputFile" />
 							<p class="help-block">
@@ -26,36 +25,22 @@
 
 						
 						{% if uploaded_file_url %}
-  			  			<script type="text/javascript">alert("{{ uploaded_file_url }}")</script>
+  			  			<script type="text/javascript"> alertify.alert('Información', 'Mensaje de alerta!', function(){ alertify.success("{{ uploaded_file_url }}");}); </script>
  					 	{% endif %}
 
 
  					 	{% if exito %}
-						<button name="compilarbtn" id="compilarbtn" type="button" class="btn btn-dark">Compilar</button>
+						<button name="compilarbtn" id="compilarbtn" type="button" class="btn btn-dark">Compilar y cargar</button>
   			  			{% else %}
-  			  			<button name="compilarbtn" id="compilarbtn" disabled type="button" class="btn btn-dark">Compilar</button>
+  			  			<button name="compilarbtn" id="compilarbtn" disabled type="button" class="btn btn-dark">Compilar y cargar</button>
  					 	{% endif %}
 				</form>
 
-
-
-
-					
-
+				</div>
+				
 			</div>
-					<br>
- 					 <br>
- 					 <br>
 
-				
-				
-
-					<br>
-					<br>
-					<br>
-					<br>
-
-
+												
 <script type="text/javascript">
 	
 
@@ -69,9 +54,9 @@
       				  dataType: 'json',
        					success: function (data) {
 				        	if (data =='true'){
-				        		alert('archivo compilado satisfactoriamente');
+				        		alertify.success('Archivo compilado y cargado satisfactoriamente');
 				        	}else{
-				        		alert('archivo no ha sido compilado');
+				        		alertify.error('Archivo no ha sido compilado');
 				        	}
 				          
 				        }
@@ -82,6 +67,8 @@
 					
 
 </script>
+
+
 
 					
 {% endblock body %}

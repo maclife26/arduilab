@@ -1,0 +1,13 @@
+{% extends "Laboratorio/base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+    
+<div class="container">
+  <div class="col-md-12">
+        <h1>Sesión cerrada </h1>  
+        	
+		<a href="{% url 'Laboratorio:login'%}">Click aquí para loguear de nuevo.<span class="glyphicon glyphicon-user"></a>
+  </div>
+</div>
+{% endblock body %}
