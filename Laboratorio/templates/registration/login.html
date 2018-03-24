@@ -5,8 +5,8 @@
 
 <div class="container">
   <div class="col-md-12">
-    {% if form.errors %}
-      <center><p class="lead">Tu usuario o contraseña no son validos. Intente nuevamente</p></center>
+    {% if error %}
+      <center><p class="lead">{{error}} ERROR !!</p></center>
     {% endif %}
     {% if next %}
       {% if user.is_authenticated %}
@@ -29,13 +29,13 @@
 
           <tr>
           
-            <td> {{ form.username.label_tag }}</td>
-            <td> {{ form.username }}</td>
+            <td> Usuario </td>
+            <td> <input type="text" id="username" name="username"></td>
           </tr>
           
           <tr><br>
-            <td><br>{{ form.password.label_tag }}</td>
-            <td><br>{{ form.password }}</td>
+            <td><br>Contraseña </td>
+            <td><br> <input type="password" name="password" id="password"></td>
           </tr>
 
           <tr><br>

@@ -4,13 +4,12 @@
 
 {% block body %}
 
-<script type="text/javascript" src="{% static 'js/jquery.knob.js' %}"></script>
 			<div class="row" align="center" >
 				<div class="centrar">
 					<form role="form" action="{% url 'Laboratorio:Subir-Archivo' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
 								{{ form.as_p }}
 						<div class="form-group">
-							 <br><br><br><br><br><br><br><br>
+							<br><br><br><br><br><br><br><br>
 							<label for="exampleInputFile">
 								Entrada de archivo
 							</label>
@@ -21,11 +20,13 @@
 						</div>
 
 						
-						<button name="sketch" type="submit" class="btn btn-dark">Enviar</button>
+						<button name="enviarbtn" id="enviarbtn" type="submit" class="btn btn-dark">Enviar</button>
 
 						
-						{% if uploaded_file_url %}
+						{% if uploaded_file_url and exito == True %}
   			  			<script type="text/javascript"> alertify.alert('Información', 'Mensaje de alerta!', function(){ alertify.success("{{ uploaded_file_url }}");}); </script>
+  			  			{% elif uploaded_file_url and exito == False %}
+  			  			<script type="text/javascript"> alertify.alert('Información', 'Mensaje de alerta!', function(){ alertify.error("{{ uploaded_file_url }}");}); </script>
  					 	{% endif %}
 
 
@@ -40,7 +41,15 @@
 				
 			</div>
 
-												
+
+			
+			<div class="col-md-12" align="right">
+
+					<h4> Tiempo restante: <span id="demo">  </span></h4>
+					<h6> Personas en cola: <span id="per">  </span></h6>
+
+			</div>
+											
 <script type="text/javascript">
 	
 
@@ -55,6 +64,8 @@
        					success: function (data) {
 				        	if (data =='true'){
 				        		alertify.success('Archivo compilado y cargado satisfactoriamente');
+				        		setTimeout(2000);
+				        		location.href ="{% url 'Laboratorio:Laboratorio' %}";
 				        	}else{
 				        		alertify.error('Archivo no ha sido compilado');
 				        	}
@@ -69,6 +80,66 @@
 </script>
 
 
+
+<script>
+
+var tiempo={{tiempo}};
+var time =  tiempo;
+var esperandoEnCola= {{cola}};
+
+
+
+function verificarUsuario(){
+  $.ajax({
+              url: '/actualizarUsuario/',
+                dataType: 'json',
+                success: function (data) {
+                  if (!data){
+                    location.href ="{% url 'Laboratorio:Esperar' %}";
+                  }
+                }
+         });
+}
+
+setInterval(verificarUsuario,1500)
+
+
+function actualizar(){
+	$.ajax({
+        			url: '/actualizarTiempos/',
+      				  dataType: 'json',
+       					success: function (data) {
+       						time=data[0];
+       						esperandoEnCola=data[1];
+				        }
+     		 });
+}
+
+setInterval(actualizar,1500)
+
+
+
+function contar(){
+
+var minutes = Math.floor( time / 60 );
+var seconds = time % 60;
+minutes = minutes < 10 ? '0' + minutes : minutes;
+seconds = seconds < 10 ? '0' + seconds : seconds;
+var result = minutes + ":" + seconds; 
+document.getElementById("demo").innerHTML= result;
+document.getElementById("per").innerHTML= esperandoEnCola;
+
+time--;
+if (time==1 && esperandoEnCola>=1){
+  location.href ="{% url 'Laboratorio:Esperar' %}";
+}else if (time==0){
+	time=tiempo;
+}
+
+}
+
+setInterval(contar,1000)
+</script>
 
 					
 {% endblock body %}

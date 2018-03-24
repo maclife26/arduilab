@@ -1,0 +1,109 @@
+{% extends "Laboratorio/base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-md-6 my-4">
+    <div class="container">
+            
+            <iframe src="http://192.168.100.42:8888" width= "545" height="320" frameborder="0"></iframe>
+
+          </div>
+  </div>
+
+<!--/////////////////////////////////////////////////////////////////////////-->
+<br><br><br><br>
+<div class="col-md-6 my-4" align="center">
+  <div class="container">
+
+      <table border="0" class="table table-striped" style="background-color:#0000; width: 50%; height: 30%;">
+        
+          <tr>
+            <td colspan="2" align="center"><p class="lead">Usuarios esperando en cola</p></td>
+          </tr>
+
+          
+            {% for usuario in colaUsuario %}
+            <tr>
+              <td> {{usuario}} </td>
+              
+             </tr>
+
+            {% endfor %}
+          
+           
+          
+
+            {# Assumes you setup the password_reset view in your URLconf #}
+      </table>
+    </div>
+        
+    <br>
+    <h3> Tiempo restante: <span id="demo"> </span></h3>
+</div>
+<br>
+</div>
+
+
+
+<script>
+
+var time = {{tiempo}};
+
+
+function actualizar(){
+  $.ajax({
+              url: '/actualizarUsuario/',
+                dataType: 'json',
+                success: function (data) {
+                  if (data){
+                    location.href ="{% url 'Laboratorio:Index' %}";
+                    
+
+                  }
+                }
+         });
+}
+
+setInterval(actualizar,1500)
+
+
+
+function actualizarTiempo(){
+  $.ajax({
+              url: '/actualizarTiempos/',
+                dataType: 'json',
+                success: function (data) {
+                  time=data[0];
+
+                }
+         });
+}
+
+setInterval(actualizarTiempo,1500)
+
+
+
+function contar(){
+
+var minutes = Math.floor( time / 60 );
+var seconds = time % 60;
+minutes = minutes < 10 ? '0' + minutes : minutes;
+seconds = seconds < 10 ? '0' + seconds : seconds;
+var result = minutes + ":" + seconds; 
+document.getElementById("demo").innerHTML= result;
+
+time--;
+if (time==0){
+  location.href ="{% url 'Laboratorio:Index' %}";
+  
+}
+
+}
+
+setInterval(contar,1500)
+</script>
+<!--/////////////////////////////////////////////////////////////////////////-->
+            
+{% endblock body %}

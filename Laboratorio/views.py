@@ -1,6 +1,7 @@
 
 from django.shortcuts import render, redirect , get_object_or_404
 from django.http import HttpResponse
+from django.contrib.auth.forms import AuthenticationForm
 
 from gpiozero import LED
 import RPi.GPIO as GPIO
@@ -12,6 +13,11 @@ import os
 import time
 import json
 from django.conf import settings
+from django.contrib.auth import authenticate, login
+from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.utils import timezone
 
 
 
@@ -19,25 +25,124 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 GPIO.setup(18, GPIO.OUT)
+#COLOCAR EL OTRO ANALÓGICO
 verde = GPIO.PWM(18, 100)
 
 
-
-
 btn2 = LED(17)
-
-'''btn1 = LED(4)
+'''
+btn1 = LED(4)
 
 btn3 = LED(6)
 btn4 = LED(12)
 btn5 = LED(13)
-'''
+
 #btn6 = LED(17)
 #btn7 = LED(18)
 #btn8 = LED(22)
 # Create your views here.
+'''
 
 
+
+
+
+
+
+#scheduler.add_job(lambda: serverTimer(200), 'interval', seconds=1, id='job_timer')
+
+
+
+
+
+TiempoRestante=settings.TIEMPO_DE_SERVICIO
+Cola=[]
+
+##queryset de usuarios 
+def obtener_usuarios_qs():
+    sesiones_actuales = Session.objects.filter(expire_date__gte=timezone.now())
+    lista_usuarios = []
+    for session in sesiones_actuales:
+        sesion = session.get_decoded()
+        lista_usuarios.append(sesion.get('_auth_user_id', None))
+    # Query all logged in users based on id list
+    return User.objects.filter(id__in=lista_usuarios)
+
+def obtener_lista_usuarios():
+    usuarios_qs=obtener_usuarios_qs()
+    lista = list(usuarios_qs.values_list('username', flat=True))
+    return lista
+
+def rotar(l, n):
+    return l[n:] + l[:n]
+
+
+def actualizarCola(superuser=False):
+    global Cola
+    global TiempoRestante
+    lista=obtener_lista_usuarios()
+    desconectados= [x for x in Cola if x not in lista]
+    nuevos= [x for x in lista if x not in Cola]
+
+    if desconectados and not superuser :
+        print('desconectados')
+        Cola=list(set(Cola)-set(desconectados))
+        #TiempoRestante=settings.TIEMPO_DE_SERVICIO
+    if nuevos:
+        Cola=Cola+nuevos
+        print('nuevos')
+
+    #print('lista'+ str(lista) )
+    #print(TiempoRestante)
+    #print(Cola)
+
+from .models import scheduler
+
+
+def caminarCola():
+    global Cola
+    Cola=rotar(Cola,1)
+    
+def tiempoUsuario(user):
+    actualizarCola()
+    global Cola
+    posicion=Cola.index(user) + 1
+    if (posicion==1 or posicion==2 ):
+        return (TiempoRestante)
+    elif(posicion>2):
+        return (TiempoRestante + ((posicion-2) * settings.TIEMPO_DE_SERVICIO))
+    
+def Acceder(request):
+    return render(request, 'registration/login.html')
+
+def Esperar(request):
+    #caminarCola()
+    context={'tiempo':tiempoUsuario(request.user.username), 'colaUsuario':Cola}
+    return render(request, 'Laboratorio/cola.html',context)
+
+def Login(request):
+    global Cola
+    global TiempoRestante
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        #scheduler.resume()
+        if not Cola:
+            #job_actualizar.resume()
+            #job_relojServicio.resume()
+            actualizarCola()
+            return redirect (reverse_lazy("Laboratorio:Index"))
+        else:
+            if user.is_superuser:
+                TiempoRestante=settings.TIEMPO_DE_SERVICIO
+                Cola.insert(0,str(user))
+                
+                actualizarCola(True)
+            return redirect (reverse_lazy("Laboratorio:Esperar"))
+    else:
+        return render(request, "registration/login.html", {'error': "ERROR222"} )
 
 
 def superuser(user):
@@ -47,18 +152,76 @@ def superuser_or_profesor(user):
     return user.is_superuser or user.groups.filter(name='Profesor').exists()
 
 
+
+def primeroEnCola(user):
+    actualizarCola()
+    if str(user)==str(Cola[0]):
+        return True
+    return False
+
+
+def relojServicio():
+    global TiempoRestante
+    if(TiempoRestante>1):
+        TiempoRestante=TiempoRestante-1
+    elif(Cola):
+        caminarCola()
+        TiempoRestante=settings.TIEMPO_DE_SERVICIO
+    else:
+        pass
+        #job_actualizar.pause()
+        #job_relojServicio.pause()
+    #print(TiempoRestante)
+
+job_actualizar= scheduler.add_job(actualizarCola, 'interval', seconds=settings.TIEMPO_DE_ACTUALIZACION_COLA, id='job_actualizar')
+job_relojServicio=scheduler.add_job(relojServicio, 'interval', seconds=1, id='job_relojServicio')
+
+
+def ActualizarTiempos(request):
+    if request.is_ajax():
+        print('usuario:'+str(request.user))
+        res=[tiempoUsuario(request.user.username), len(Cola)-1]
+        data = json.dumps(res)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
+
+
+def ActualizarUsuario(request):
+    if request.is_ajax():
+        user=request.user
+        if primeroEnCola(user):
+            res=True
+        else:
+            res=False
+        data = json.dumps(res)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
+
+
+#........................................................................................
+
+
+
 def Index(request):
-	#if request.GET["pin04"]:
+	context={'tiempo':tiempoUsuario(request.user.username), 'cola': len(Cola)-1 }
+	return render(request, 'Laboratorio/index.html',context )
 
-	return render(request, 'Laboratorio/laboratorio.html')
+def Laboratorio(request):
+    context={'tiempo':tiempoUsuario(request.user.username), 'cola': len(Cola)-1 }
+    return render(request, 'Laboratorio/laboratorio.html', context)
+
+def Ingresar(request):
+    if request.method == 'POST':
+        return redirect(reverse_lazy("Laboratorio:Subir-Archivo"))
 
 
-def Pin02(request):
-	if 'on1' in request.POST:
-		btn2.on()
-	elif 'off1' in request.POST:
-		btn2.off()
-	return render(request, 'Laboratorio/principal.html')
+
 
 class MyFileSystemStorage(FileSystemStorage):
     def get_available_name(self, name, max_length=None):
@@ -67,7 +230,9 @@ class MyFileSystemStorage(FileSystemStorage):
         return name
 
 #Envío de archivo .ino al servidor
-def SubirArchivo(request):       
+def SubirArchivo(request):  
+    context={'tiempo':tiempoUsuario(request.user.username), 'cola': len(Cola)-1 }
+
     if request.method == 'POST' and request.FILES.get('exampleInputFile'):
         myfile = request.FILES['exampleInputFile']
         if str(myfile.name).endswith(".ino"):
@@ -77,6 +242,7 @@ def SubirArchivo(request):
             print(filename)
             uploaded_file_url = fs.url(filename)
             print(uploaded_file_url)
+            
             return render(request, 'Laboratorio/subir_archivo.html', {
                 'uploaded_file_url': "Archivo subido satisfactoriamente", 'exito': True,
             })
@@ -84,28 +250,28 @@ def SubirArchivo(request):
                 'uploaded_file_url': "El archivo debe tener extensión .ino", 'exito': False,
             })
 
-    return render(request,  'Laboratorio/subir_archivo.html')
+    return render(request,  'Laboratorio/subir_archivo.html', context)
+
 
 import subprocess
 
 def Compilar(request):
-    print('compilar req')
     if request.is_ajax():
         currentdir =os.path.dirname(os.path.abspath(__file__))
         print ('base'+ str(currentdir))
         os.chdir(settings.MEDIA_ROOT)
         
-        #time.sleep(20)
         salidaCompilacion= subprocess.call('bash make2.sh', shell=True, cwd='/home/pi/projects/arduilab/media/sketchbook/')
+
         #salida= subprocess.Popen('bash monitor.sh', shell=True, cwd='/home/pi/projects/arduilab/media/sketchbook/').read()
         #time.sleep(15)
-        #print (salida)
         results='true'
         data = json.dumps(results)
     else:
         data = 'fail'
     mimetype = 'application/json'
 
+    #return redirect (reverse_lazy("Laboratorio:Laboratorio"), data, mimetype)
     return HttpResponse(data, mimetype)
 
 
