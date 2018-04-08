@@ -42,13 +42,17 @@
 			</div>
 
 
-			
-			<div class="col-md-12" align="right">
+
+		<!--/
+<div class="col-md-12" align="right">
 
 					<h4> Tiempo restante: <span id="demo">  </span></h4>
 					<h6> Personas en cola: <span id="per">  </span></h6>
 
 			</div>
+
+-->	
+			
 											
 <script type="text/javascript">
 	
@@ -64,8 +68,8 @@
        					success: function (data) {
 				        	if (data =='true'){
 				        		alertify.success('Archivo compilado y cargado satisfactoriamente');
-				        		setTimeout(2000);
-				        		location.href ="{% url 'Laboratorio:Laboratorio' %}";
+				        		setTimeout(function(){ location.href ="{% url 'Laboratorio:Laboratorio' %}"; }, 2000);
+				        		
 				        	}else{
 				        		alertify.error('Archivo no ha sido compilado');
 				        	}

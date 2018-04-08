@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Laboratorio',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -70,8 +71,8 @@ TEMPLATES = [
 ]
 
 
-
-WSGI_APPLICATION = 'arduilab.wsgi.application'
+ASGI_APPLICATION = 'arduilab.routing.application'
+#WSGI_APPLICATION = 'arduilab.wsgi.application'
 
 
 # Database
@@ -144,5 +145,4 @@ LOGIN_URL='/login/'
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-TIEMPO_DE_ACTUALIZACION_COLA=1
 TIEMPO_DE_SERVICIO=200

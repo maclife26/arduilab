@@ -13,6 +13,12 @@
 					<div class="container text-center">
 						
 						<iframe src="http://192.168.100.42:8888" width= "545" height="320" frameborder="0"></iframe>
+						<textarea id="monitor" cols="45" rows="8"></textarea><br/>
+	    				<input id="btn_empezar" type="button" value="Empezar"/>
+	   					<input id="btn_parar" type="button" value="Parar"/>
+	   					<input type="number" id="txt_baudios" min="1" max="1000000" placeholder="9600" value="9600">
+	   					<input id="btn_env_baudios" type="button" value="Baudios"/>
+
 
 					</div>
 
@@ -69,16 +75,12 @@
 							        	'angleOffset':-125,    
 										'angleArc':250,
 										release : function (value) {
-                    					//alert(this.$.attr('data-entryid')); 
-                    					//alert("release : " + value);
-
+                    					
                     					$.ajax({
         									url: '/accionarAnalogo/',
         									data: {
         				  							'peticionA': value,
-        				  							'saludo': (this.$.attr('data-entryid'))
-        				  							
-        				  							
+        				  							'saludo': (this.$.attr('data-entryid'))			  							
        				 						},
       				  						dataType: 'json',
        											
@@ -257,7 +259,53 @@ setInterval(contar,1500)
 			</script>
 -->
 			
+<script>
 
+    var Socket_cn = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/' + 'laboratorio' + '/');
+
+    Socket_cn.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        document.querySelector('#monitor').value += (message + '\n');
+        obj = document.getElementById("monitor");
+        var currentScrollHeight = obj.scrollHeight;
+        obj.scrollTop = (obj.scrollTop + 100000); //set the scroll height to scroll by here.
+       
+     
+    };
+
+    Socket_cn.onclose = function(e) {
+        console.error('La conexión con socket se ha detenido');
+    };
+
+    document.querySelector('#btn_empezar').onclick = function(e) {
+        Socket_cn.send(JSON.stringify({
+            'tipo':'start',
+        }));
+    };
+
+    document.querySelector('#btn_parar').onclick = function(e) {
+        
+        Socket_cn.send(JSON.stringify({
+            'tipo':'stop',
+        }));
+    };
+
+    document.querySelector('#btn_env_baudios').onclick = function(e) {
+    var baudiosInput = document.querySelector('#txt_baudios');
+   	var baudios = baudiosInput.value;
+       
+        Socket_cn.send(JSON.stringify({
+            'tipo':'baudio',
+            'baudios': baudios,
+        }));
+
+    };
+
+
+</script>
 
 
 {% endblock body %}

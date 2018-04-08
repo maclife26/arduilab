@@ -6,7 +6,9 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.conf.urls.static import static
+from django.contrib.sessions.models import Session
 
+Session.objects.all().delete()
 
 
 app_name ='Laboratorio'
