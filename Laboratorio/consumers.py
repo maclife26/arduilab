@@ -8,7 +8,9 @@ class SerialConsumer(WebsocketConsumer):
 
     _puerto='/dev/ttyACM0'
     __job_enviar= scheduler
+    
     __ser = serial.Serial(_puerto, 9600)
+    __ser.is_open
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

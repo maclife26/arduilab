@@ -1,4 +1,4 @@
-APScheduler==3.5.1
+﻿APScheduler==3.5.1
 asgiref==2.2.0
 async-timeout==2.0.1
 attrs==17.4.0

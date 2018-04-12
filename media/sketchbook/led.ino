@@ -15,11 +15,11 @@ void loop() {
   if (value == HIGH){
       digitalWrite(outputPin, HIGH);
       Serial.println("Encendido");
-      delay(250);		
+      delay(1000);		
    }
    else{
       digitalWrite(outputPin, LOW);
       Serial.println("Apagado");
-      delay(250);
+      delay(1000);
    } 
 }

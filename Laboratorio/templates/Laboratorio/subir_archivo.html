@@ -4,8 +4,12 @@
 
 {% block body %}
 
+<script type="text/javascript" src="{% static 'js/loading.js' %}"></script>
+
 			<div class="row" align="center" >
-				<div class="centrar">
+				
+				<div class="centrar" id="toggle-div">
+					
 					<form role="form" action="{% url 'Laboratorio:Subir-Archivo' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
 								{{ form.as_p }}
 						<div class="form-group">
@@ -20,28 +24,36 @@
 						</div>
 
 						
-						<button name="enviarbtn" id="enviarbtn" type="submit" class="btn btn-dark">Enviar</button>
+						<button name="enviarbtn" id="enviarbtn" type="submit" class="btn btn-dark"
+						>Enviar</button>
 
 						
 						{% if uploaded_file_url and exito == True %}
-  			  			<script type="text/javascript"> alertify.alert('Información', 'Mensaje de alerta!', function(){ alertify.success("{{ uploaded_file_url }}");}); </script>
+  			  			<script type="text/javascript">alertify.success("{{ uploaded_file_url }}"); </script>
+  			  			
+
+  			  			<script type="text/javascript">
+ 					 	$("#enviarbtn").click(function () {
+					
+								$('#enviarbtn').attr("disabled", true);	
+
+						});
+ 					 	</script>
+
   			  			{% elif uploaded_file_url and exito == False %}
-  			  			<script type="text/javascript"> alertify.alert('Información', 'Mensaje de alerta!', function(){ alertify.error("{{ uploaded_file_url }}");}); </script>
+  			  			<script type="text/javascript">alertify.error("{{ uploaded_file_url }}"); </script>
  					 	{% endif %}
 
 
  					 	{% if exito %}
-						<button name="compilarbtn" id="compilarbtn" type="button" class="btn btn-dark">Compilar y cargar</button>
+
+						<button name="compilarbtn" id="compilarbtn" type="button" class="btn btn-dark">Compilar y cargar</button>						
   			  			{% else %}
   			  			<button name="compilarbtn" id="compilarbtn" disabled type="button" class="btn btn-dark">Compilar y cargar</button>
  					 	{% endif %}
 				</form>
-
-				</div>
-				
+				</div>				
 			</div>
-
-
 
 		<!--/
 <div class="col-md-12" align="right">
@@ -55,10 +67,14 @@
 			
 											
 <script type="text/javascript">
-	
 
 		$("#compilarbtn").click(function () {
+
+			$('body').loading({
+  			stoppable: true
+			});
 					
+
 						$.ajax({
         			url: '/compilar/',
         			data: {
@@ -68,7 +84,8 @@
        					success: function (data) {
 				        	if (data =='true'){
 				        		alertify.success('Archivo compilado y cargado satisfactoriamente');
-				        		setTimeout(function(){ location.href ="{% url 'Laboratorio:Laboratorio' %}"; }, 2000);
+				        		
+				        		setTimeout(function(){ location.href ="{% url 'Laboratorio:Laboratorio' %}"; }, 1000);
 				        		
 				        	}else{
 				        		alertify.error('Archivo no ha sido compilado');

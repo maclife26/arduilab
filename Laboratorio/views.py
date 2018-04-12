@@ -75,14 +75,14 @@ def rotar(l, n):
     return l[n:] + l[:n]
 
 
-def actualizarCola(superuser=False):
+def actualizarCola(superuser=False, staff=False):
     global Cola
     global TiempoRestante
     lista=obtener_lista_usuarios()
     desconectados= [x for x in Cola if x not in lista]
     nuevos= [x for x in lista if x not in Cola]
 
-    if desconectados and not superuser :
+    if desconectados and not superuser:
         if Cola[0] in desconectados:
             TiempoRestante=settings.TIEMPO_DE_SERVICIO
         print('desconectados')
@@ -91,9 +91,6 @@ def actualizarCola(superuser=False):
         Cola=Cola+nuevos
         print('nuevos')
 
-    #print('lista'+ str(lista) )
-    #print(TiempoRestante)
-    #print(Cola)
 
 def caminarCola():
     global Cola
@@ -109,7 +106,6 @@ def tiempoUsuario(user):
         return (TiempoRestante + ((posicion-2) * settings.TIEMPO_DE_SERVICIO))
     
 def Esperar(request):
-    #caminarCola()
     context={'tiempo':tiempoUsuario(request.user.username), 'colaUsuario':Cola}
     return render(request, 'Laboratorio/cola.html',context)
 
@@ -122,14 +118,12 @@ def Login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            #scheduler.resume()
             if not Cola:
-                #job_relojServicio.resume()
                 TiempoRestante=settings.TIEMPO_DE_SERVICIO
                 actualizarCola()
                 return redirect (reverse_lazy("Laboratorio:Index"))
             else:
-                if user.is_superuser:
+                if user.is_superuser or user.is_staff:
                     TiempoRestante=settings.TIEMPO_DE_SERVICIO
                     Cola.insert(0,str(user))       
                     actualizarCola(True)
@@ -140,6 +134,9 @@ def Login(request):
 
 def superuser(user):
     return user.is_superuser
+
+def staff(user):
+    return user.is_staff
 
 def superuser_or_profesor(user):
     return user.is_superuser or user.groups.filter(name='Profesor').exists()
@@ -167,7 +164,6 @@ def relojServicio():
     else:
         pass
         #job_relojServicio.pause()
-    #print(TiempoRestante)
 
 job_relojServicio=scheduler.add_job(relojServicio, 'interval', seconds=1, id='job_relojServicio')
 
@@ -219,10 +215,8 @@ class MyFileSystemStorage(FileSystemStorage):
         return name
 
 
-#Envío de archivo .ino al servidor
+#Envío de archivo .ino al servidor y respaldos
 def SubirArchivo(request):  
-    #context={'tiempo':tiempoUsuario(request.user.username), 'cola': len(Cola)-1 }
-
     if request.method == 'POST' and request.FILES.get('exampleInputFile'):
         myfile = request.FILES['exampleInputFile']
         if str(myfile.name).endswith(".ino"):
@@ -233,7 +227,7 @@ def SubirArchivo(request):
             respaldosDir = 'Respaldos'
             fecha= datetime.datetime.now().strftime("%d_%m_%y %H %M")
             src_dir=fs.path(myfile.name)
-            nombre_archivo='/{0}_{1}_{2}'.format( request.user, fecha, myfile.name)
+            nombre_archivo='/{0}_{1}_{2}'.format(fecha, request.user, myfile.name)
             des_dir = os.path.join(settings.MEDIA_ROOT, respaldosDir+nombre_archivo)
             shutil.copy2(src_dir,des_dir)
             
@@ -249,14 +243,10 @@ def SubirArchivo(request):
 
 def Compilar(request):
     if request.is_ajax():
-        currentdir =os.path.dirname(os.path.abspath(__file__))
+        currentdir = os.path.dirname(os.path.abspath(__file__))
         print ('base'+ str(currentdir))
-        os.chdir(settings.MEDIA_ROOT)
-        
+        os.chdir(settings.MEDIA_ROOT)      
         salidaCompilacion= subprocess.call('bash make.sh', shell=True, cwd='/home/pi/projects/arduilab/media/sketchbook/')
-
-        #salida= subprocess.Popen('bash monitor.sh', shell=True, cwd='/home/pi/projects/arduilab/media/sketchbook/').read()
-        #time.sleep(15)
         results='true'
         data = json.dumps(results)
     else:

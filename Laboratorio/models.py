@@ -9,12 +9,12 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 
 executors = {
-    'default': ThreadPoolExecutor(6),
-    'processpool': ProcessPoolExecutor(2)
+    'default': ThreadPoolExecutor(10),
+    'processpool': ProcessPoolExecutor(5)
 }
 job_defaults = {
     'coalesce': False,
-    'max_instances': 2
+    'max_instances': 3
 }
 scheduler = BackgroundScheduler( executors=executors, job_defaults=job_defaults)
 scheduler.start()

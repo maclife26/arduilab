@@ -51,16 +51,13 @@
 
 var time = {{tiempo}};
 
-
 function actualizar(){
   $.ajax({
               url: '/actualizarUsuario/',
                 dataType: 'json',
                 success: function (data) {
                   if (data){
-                    location.href ="{% url 'Laboratorio:Index' %}";
-                    
-
+                    location.href ="{% url 'Laboratorio:Index' %}";                    
                   }
                 }
          });
@@ -68,22 +65,17 @@ function actualizar(){
 
 setInterval(actualizar,1500)
 
-
-
 function actualizarTiempo(){
   $.ajax({
               url: '/actualizarTiempos/',
                 dataType: 'json',
                 success: function (data) {
                   time=data[0];
-
                 }
          });
 }
 
 setInterval(actualizarTiempo,1500)
-
-
 
 function contar(){
 

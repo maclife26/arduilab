@@ -16,9 +16,11 @@
 						<textarea id="monitor" cols="45" rows="8"></textarea><br/>
 	    				<input id="btn_empezar" type="button" value="Empezar"/>
 	   					<input id="btn_parar" type="button" value="Parar"/>
-	   					<input type="number" id="txt_baudios" min="1" max="1000000" placeholder="9600" value="9600">
+	   					<!--
+		
+<input type="number" id="txt_baudios" min="1" max="1000000" placeholder="9600" value="9600">
 	   					<input id="btn_env_baudios" type="button" value="Baudios"/>
-
+-->
 
 					</div>
 
@@ -36,7 +38,7 @@
 								<button id="on1" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin1 On</button>
 								<button id="off1" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin1 Off</button>
 								<br>
-								<button id="on2" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin2 On</button>
+								<button id="on2" type="submit" onclick="Enviar(this)" class= "btn btn-dark">Pin2 On</button>
 								<button id="off2" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin2 Off</button>
 								<br>
 								<button id="on3" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin3 On</button>
@@ -108,9 +110,7 @@
 							        	'angleOffset':-125,
 										'angleArc':250,
 										release : function (value) {
-                    					//alert(this.$.attr('data-entryid')); 
-                    					//alert("release : " + value);
-
+                    					
                     					$.ajax({
         									url: '/accionarAnalogo/',
         									data: {
@@ -154,7 +154,20 @@
 			<script type="text/javascript">
 			var objeto;
 			function Enviar(a){
+				
 				objeto=a;
+				//if (a.id == 'on2'){
+				//	$("#on2").click(function(){ 
+    			//		$('#on2').attr('id','off2');
+    			//		});	
+				//}else if (a.id == 'off2'){
+				//	$("#off2").click(function(){ 
+    			//		$('#off2').attr('id','on2');     				
+    			//		});	
+				//}else{
+
+				//}
+				 
 				$.ajax({
         			url: '/accionarBoton/',
         			data: {
@@ -162,11 +175,14 @@
        				 },
       				  dataType: 'json',
        					success: function (data) {
+
 				        		boton = document.getElementById(String(data))
-				        		if (boton.className  == "btn btn-success"){
-				        			boton.className = "btn btn-danger";
-				        		}else{
+
+				        		if (boton.className  == "btn btn-dark"){
 				        			boton.className = "btn btn-success";
+
+				        		}else{
+				        			boton.className = "btn btn-dark";
 				        		}
 				        		
 				        }
@@ -238,25 +254,8 @@ if (time==1 && esperandoEnCola>=1){
 setInterval(contar,1500)
 </script>
 
-<!--/////////////////////////////////////////////////////////////////////////
-			<script type="text/javascript">
-			var objetoA;
-			function EnviarAna(b){
-				objetoA=b;
-				$.ajax({
-        			url: '/accionarAnalogo/',
-        			data: {
-        				  'peticionA': String(objeto.id)
-       				 },
-      				  dataType: 'json',
-       					success: function (data) {
-				        		boton = document.getElementById(String(data))
-				        		
-				        }
-     		 });
-			}
-			
-			</script>
+<!--
+		
 -->
 			
 <script>
