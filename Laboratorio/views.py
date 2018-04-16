@@ -265,37 +265,37 @@ def AccionarBoton(request):
         print (data)
         
         if "on1" in data:
-            btn1.on()
-        elif "off1" in data:
             btn1.off()
+        elif "off1" in data:
+            btn1.on()
         elif "on2" in data:
-            btn2.on()
-        elif "off2" in data:
             btn2.off()
+        elif "off2" in data:
+            btn2.on()
         elif "on3" in data:
-            btn3.on()
-        elif "off3" in data:
             btn3.off()
+        elif "off3" in data:
+            btn3.on()
         elif "on4" in data:
-            btn4.on()
-        elif "off4" in data:
             btn4.off()
+        elif "off4" in data:
+            btn4.on()
         elif "on5" in data:
-            btn5.on()
-        elif "off5" in data:
             btn5.off()
+        elif "off5" in data:
+            btn5.on()
         elif "on6" in data:
-            btn7.on()
-        elif "off6" in data:
             btn6.off()
+        elif "off6" in data:
+            btn6.on()
         elif "on7" in data:
-            btn7.on()
-        elif "off7" in data:
             btn7.off()
+        elif "off7" in data:
+            btn7.on()
         elif "on8" in data:
-            btn8.on()
+            btn8.off()
         elif "off8" in data:
-            btn8.off()        
+            btn8.on()        
     else:
         data = 'fail'
     mimetype = 'application/json'

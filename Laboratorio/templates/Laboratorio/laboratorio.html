@@ -35,29 +35,36 @@
 						<div class="col-md-6">
 
 								<h6 class="font-weight-bold">Entradas Digitales</h6>
-								<button id="on1" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin1 On</button>
-								<button id="off1" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin1 Off</button>
+								<input id="on1" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 1">
+								</button>								
 								<br>
-								<button id="on2" type="submit" onclick="Enviar(this)" class= "btn btn-dark">Pin2 On</button>
-								<button id="off2" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin2 Off</button>
+								<input id="on2" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 2">
+								</button>
+	
 								<br>
-								<button id="on3" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin3 On</button>
-								<button id="off3" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin3 Off</button>
+								<input id="on3" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 3">
+								</button>
+								
 								<br>
-								<button id="on4" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin4 On</button>
-								<button id="off4" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin4 Off</button>
+								<input id="on4" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 4">
+								</button>
+								
 								<br>
-								<button id="on5" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin5 On</button>
-								<button id="off5" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin5 Off</button>
+								<input id="on5" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 5">
+								</button>
+								
 								<br>
-								<button id="on6" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin6 On</button>
-								<button id="off6" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin6 Off</button>
+								<input id="on6" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 6">
+								</button>
+								
 								<br>
-								<button id="on7" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin7 On</button>
-								<button id="off7" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin7 Off</button>
+								<input id="on7" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 7">
+								</button>
+								
 								<br>
-								<button id="on8" type="submit" onclick="Enviar(this)" class="btn btn-success">Pin8 On</button>
-								<button id="off8" type="submit" onclick="Enviar(this)" class="btn btn-danger">Pin8 Off</button>
+								<input id="on8" type="button" onclick="Enviar(this)" class="btn btn-dark" value="Pin 8">
+								</button>
+								
 								<br><br><br>						
 						</div>
 
@@ -154,20 +161,76 @@
 			<script type="text/javascript">
 			var objeto;
 			function Enviar(a){
-				
-				objeto=a;
-				//if (a.id == 'on2'){
-				//	$("#on2").click(function(){ 
-    			//		$('#on2').attr('id','off2');
-    			//		});	
-				//}else if (a.id == 'off2'){
-				//	$("#off2").click(function(){ 
-    			//		$('#off2').attr('id','on2');     				
-    			//		});	
-				//}else{
+							
+				if (a.id == 'on1'){
+    					$('#on1').prop('id','off1');
+    					$('#off1').prop('class','btn btn-success');
+    					$('#off1').prop('value','ON 1');   					
+				}else if (a.id == 'off1'){					 
+    					$('#off1').prop('id','on1');
+    					$('#on1').prop('class','btn btn-danger');   
+    					$('#on1').prop('value','OFF 1'); 				  					
+				}else if (a.id == 'on2'){
+    					$('#on2').prop('id','off2');
+    					$('#off2').prop('class','btn btn-success');
+    					$('#off2').prop('value','ON 2');   					
+				}else if (a.id == 'off2'){					 
+    					$('#off2').prop('id','on2');
+    					$('#on2').prop('class','btn btn-danger');   
+    					$('#on2').prop('value','OFF 2'); 				  					
+				}else if (a.id == 'on3'){
+						$('#on3').prop('id','off3');
+    					$('#off3').prop('class','btn btn-success');
+    					$('#off3').prop('value','ON 3');
+				}else if (a.id == 'off3'){
+						$('#off3').prop('id','on3');
+    					$('#on3').prop('class','btn btn-danger');   
+    					$('#on3').prop('value','OFF 3'); 
+				}else if (a.id == 'on4'){
+						$('#on4').prop('id','off4');
+    					$('#off4').prop('class','btn btn-success');
+    					$('#off4').prop('value','ON 4');
+				}else if (a.id == 'off4'){
+						$('#off4').prop('id','on4');
+    					$('#on4').prop('class','btn btn-danger');   
+    					$('#on4').prop('value','OFF 4'); 
+				}else if (a.id == 'on5'){
+						$('#on5').prop('id','off5');
+    					$('#off5').prop('class','btn btn-success');
+    					$('#off5').prop('value','ON 5');
+				}else if (a.id == 'off5'){
+						$('#off5').prop('id','on5');
+    					$('#on5').prop('class','btn btn-danger');   
+    					$('#on5').prop('value','OFF 5'); 
+				}else if (a.id == 'on6'){
+						$('#on6').prop('id','off6');
+    					$('#off6').prop('class','btn btn-success');
+    					$('#off6').prop('value','ON 6');
+				}else if (a.id == 'off6'){
+						$('#off6').prop('id','on6');
+    					$('#on6').prop('class','btn btn-danger');   
+    					$('#on6').prop('value','OFF 6'); 
+				}else if (a.id == 'on7'){
+						$('#on7').prop('id','off7');
+    					$('#off7').prop('class','btn btn-success');
+    					$('#off7').prop('value','ON 7');
+				}else if (a.id == 'off7'){
+						$('#off7').prop('id','on7');
+    					$('#on7').prop('class','btn btn-danger');   
+    					$('#on7').prop('value','OFF 7'); 
+				}else if (a.id == 'on8'){
+						$('#on8').prop('id','off8');
+    					$('#off8').prop('class','btn btn-success');
+    					$('#off8').prop('value','ON 8');
+				}else if (a.id == 'off8'){
+						$('#off8').prop('id','on8');
+    					$('#on8').prop('class','btn btn-danger');   
+    					$('#on8').prop('value','OFF 8'); 
+				}else{
 
-				//}
-				 
+				}
+
+				objeto=a;
 				$.ajax({
         			url: '/accionarBoton/',
         			data: {
@@ -176,14 +239,7 @@
       				  dataType: 'json',
        					success: function (data) {
 
-				        		boton = document.getElementById(String(data))
-
-				        		if (boton.className  == "btn btn-dark"){
-				        			boton.className = "btn btn-success";
-
-				        		}else{
-				        			boton.className = "btn btn-dark";
-				        		}
+				        		
 				        		
 				        }
      		 });
