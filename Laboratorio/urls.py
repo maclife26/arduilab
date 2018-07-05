@@ -15,15 +15,15 @@ app_name ='Laboratorio'
 
 urlpatterns = [
 
-#url(r'^subir_archivo/$', user_passes_test(views.primeroEnCola, login_url='/esperar/' )( views.Index ), name='Index'),
+
 url(r'^index/$', user_passes_test(views.primeroEnCola, login_url='/esperar/' )( views.Index ), name='Index'),
 url(r'^ingresar/$', login_required(views.Ingresar), name='Ingresar'),
-#url(r'^laboratorio/$', user_passes_test(views.primeroEnCola, login_url='/esperar/')( views.Index ), name='Index'),
 url(r'^laboratorio/$', login_required(views.Laboratorio, login_url='/esperar/'), name='Laboratorio'),
 
 
 url(r'^subirArchivo/$', login_required(views.SubirArchivo, login_url='/esperar/'), name='Subir-Archivo'),
 url(r'^compilar/$', login_required(views.Compilar) ,name='Compilar'),
+url(r'^laboratorio/cierre/$', login_required(views.Cierre) ,name='Cierre'),
 url(r'^accionarBoton/$', views.AccionarBoton ,name='Accionar-Boton'),
 url(r'^accionarAnalogo/$', views.AccionarAnalogo ,name='Accionar-Analogo'),
 

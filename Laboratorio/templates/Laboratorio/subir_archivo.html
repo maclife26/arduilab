@@ -71,10 +71,8 @@
 		$("#compilarbtn").click(function () {
 
 			$('body').loading({
-  			stoppable: true
-			});
-					
-
+  			stoppable: false
+			});					
 						$.ajax({
         			url: '/compilar/',
         			data: {

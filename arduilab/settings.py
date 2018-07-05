@@ -70,6 +70,9 @@ TEMPLATES = [
     },
 ]
 
+#ASGI nuevo
+
+
 
 ASGI_APPLICATION = 'arduilab.routing.application'
 #WSGI_APPLICATION = 'arduilab.wsgi.application'
@@ -145,4 +148,6 @@ LOGIN_URL='/login/'
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+#Tiempo de sesión de usuario en segundos
 TIEMPO_DE_SERVICIO=200

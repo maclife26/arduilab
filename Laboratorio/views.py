@@ -25,13 +25,12 @@ import subprocess
 
 
 
-
-
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 GPIO.setup(18, GPIO.OUT)
+#GPIO.setup(24, GPIO.OUT)
+
 #COLOCAR EL OTRO ANALÓGICO
 firts = GPIO.PWM(18, 100) #23
 #second = GPIO.PWM(24, 100)
@@ -309,13 +308,41 @@ def AccionarAnalogo(request):
         saludo=request.GET.get('saludo')
 
         firts.start(0)
+        #second.start(0)
 
         if "ana1" in saludo:       
             results = (int(results)*1.00)
+            print(results)
             firts.ChangeDutyCycle(results)
             
         elif "ana2" in saludo:        
             results = (int(results)*1.00)
-            firts.ChangeDutyCycle(results)
+            #second.ChangeDutyCycle(results)
                
     return HttpResponse(status=200)
+
+
+def Cierre(request):
+    if request.is_ajax():
+        #obj=request.GET.get('peticion')
+        #if "hola" in obj:
+            #btn2.off()
+            
+            """btn1.off()
+    
+            btn3.off()
+            btn4.off()
+            btn5.off()
+            btn6.off()
+            btn7.off()
+            btn8.off()
+            firts.start(0)
+            #second.start(0)"""
+            #GPIO.cleanup()
+            results='true'
+            data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+
+    return HttpResponse(data, mimetype)
